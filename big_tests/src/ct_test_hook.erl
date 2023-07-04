@@ -86,7 +86,14 @@ start_tracing() ->
     case dbg:tracer(process, {fun tracer_fun/2, ok}) of
         {ok, _Pid} ->
             dbg:p(all, call),
+<<<<<<< HEAD
             dbg:tp(?MODULE, []);
+=======
+            % dbg:tp(?MODULE, []),
+            % dbg:tpl(ct_markdown_errors_hook, cx),
+            dbg:tp(ct_groups_summary_hook, cx),
+            ok;
+>>>>>>> b6c35a488 (improving ct_groups_summary_hook)
         {error, already_started} ->
             ok
     end.
