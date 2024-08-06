@@ -1,0 +1,3 @@
+_build
+test/ct_app/_build/
+.*.sw*
