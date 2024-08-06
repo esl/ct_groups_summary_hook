@@ -1,3 +1,4 @@
 _build
-test/ct_app/_build/
+ct_app/_build/
 .*.sw*
+ct_app/tests/ct_groups_summary_hook.erl
