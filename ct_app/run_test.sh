@@ -13,4 +13,7 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 mkdir -p _build/test/extras/
 cp my.spec _build/test/extras/my.spec
 
+# Copy hook, so rebar could compile and load it.
+cp ../src/ct_groups_summary_hook.erl tests/ct_groups_summary_hook.erl
+
 rebar3 ct --spec="my.spec"
