@@ -36,3 +36,12 @@ run_ct(_Config) ->
     Res = os:cmd("../../../../ct_app/run_test.sh"),
     ct:pal("Res ~ts", [Res]),
     ok.
+
+% ct_app/_build/test/logs/last/all_groups.summary
+% {total_ok,2}.
+% {total_eventually_ok_tests,4}.
+% {total_failed,1}
+
+% ct_app/_build/test/logs/last/extras.tests.test_SUITE.logs/run.2024-08-06_19.57.32/groups.summary
+%{groups_summary,{2,1}}.
+%{eventually_ok_tests,4}.
