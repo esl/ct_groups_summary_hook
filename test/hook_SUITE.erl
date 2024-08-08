@@ -12,7 +12,7 @@ groups() ->
     [{test_group, [], test_cases()}].
 
 test_cases() ->
-    [run_ct].
+    [run_test].
 
 init_per_suite(Config) ->
     Config.
@@ -32,8 +32,8 @@ end_per_testcase(_CaseName, Config) ->
     Config.
 
 
-run_ct(_Config) ->
-    Res = os:cmd(repo_dir("ct_app/run_test.sh")),
+run_test(_Config) ->
+    Res = os:cmd(repo_dir("ct_app/run_test.sh test")),
     ct:pal("Res ~ts", [Res]),
     {ok, Sum} = file:consult(repo_dir("ct_app/_build/test/logs/last/all_groups.summary")),
     [{total_ok, 2},

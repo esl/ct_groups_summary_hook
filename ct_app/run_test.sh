@@ -2,6 +2,8 @@
 set -e
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
+SPEC=$1
+
 # Rebar3 is broken, so it fails with:
 # {function_clause,
 #     [{ct_run,run_all_specs,
@@ -11,9 +13,9 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 # So we copy the spec manually :(
 mkdir -p _build/test/extras/
-cp my.spec _build/test/extras/my.spec
+cp $SPEC.spec _build/test/extras/$SPEC.spec
 
 # Copy hook, so rebar could compile and load it.
 cp ../src/ct_groups_summary_hook.erl tests/ct_groups_summary_hook.erl
 
-rebar3 ct --spec="my.spec"
+rebar3 ct --spec="$SPEC.spec"
