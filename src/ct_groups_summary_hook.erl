@@ -26,31 +26,31 @@ id(_Opts) ->
 
 %% @doc Always called before any other callback function. Use this to initiate
 %% any common state.
-init(_Id, _Opts) ->
-    %ct:pal("init opts: ~p", [Opts]),
-    {ok, #{total_ok => 0,
+init(_Id, Opts) ->
+    {ok, #{logs => proplists:get_value(logs, Opts, false),
+           total_ok => 0,
            total_failed => 0,
            total_eventually_ok_tests => 0}}.
 
 pre_init_per_suite(Suite, Config, State) ->
-    %ct:pal("pre_init_per_suite config: ~p", [Config]),
-    %ct:pal("pre_init_per_suite state: ~p", [State]),
+    log(State, "pre_init_per_suite config: ~p", [Config]),
+    log(State, "pre_init_per_suite state: ~p", [State]),
     %% Start with an empty CT hook state for each suite.
     {Config, State#{current_suite => Suite, Suite => #{}}}.
 
 post_end_per_suite(_SuiteName, Config, Return, State) ->
-    %ct:pal("post_end_per_suite config: ~p", [Config]),
-    %ct:pal("post_end_per_suite state: ~p", [State]),
-    %ct:pal("post_end_per_suite return: ~p", [Return]),
+    log(State, "post_end_per_suite config: ~p", [Config]),
+    log(State, "post_end_per_suite state: ~p", [State]),
+    log(State, "post_end_per_suite return: ~p", [Return]),
     NewState = write_groups_summary(Config, State),
     {Return, NewState}.
 
 post_end_per_group(GroupName, Config, Return, State) ->
-    %ct:pal("post_end_per_group config: ~p", [Config]),
-    %ct:pal("post_end_per_group state: ~p", [State]),
-    %ct:pal("post_end_per_group return: ~p", [Return]),
+    log(State, "post_end_per_group config: ~p", [Config]),
+    log(State, "post_end_per_group state: ~p", [State]),
+    log(State, "post_end_per_group return: ~p", [Return]),
     State1 = update_group_status(GroupName, Config, State),
-    ct:log("NewState: ~p", [State1]),
+    log(State, "NewState: ~p", [State1]),
     {Return, State1}.
 
 %% @doc Called when a test case is skipped by either user action
@@ -173,3 +173,9 @@ acc_groups_summary(_GroupName, #group_status{status = failed, n_failed = NFailed
                    {OkGroupsAcc, FailedGroupsAcc, EventuallyOkAcc}) ->
     %% The group never succeeded, the failed tests are NOT eventually ok.
     {OkGroupsAcc, FailedGroupsAcc + 1, EventuallyOkAcc}.
+
+
+log(#{logs := true}, Pattern, Args) ->
+    ct:pal("Logs " ++ Pattern, Args);
+log(_State, _Pattern, _Args) ->
+    ok.
