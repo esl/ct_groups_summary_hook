@@ -14,7 +14,8 @@ groups() ->
 test_cases() ->
     [run_test,
      run_test2_repeat3,
-     run_test2_repeat4].
+     run_test2_repeat4,
+     run_test3_repeat4].
 
 init_per_suite(Config) ->
     Config.
@@ -34,9 +35,11 @@ end_per_testcase(_CaseName, Config) ->
     Config.
 
 run_test(_Config) ->
+    %% Original tests, tests everything.
     Res = os:cmd(repo_dir("ct_app/run_test.sh test")),
     ct:pal("Res ~ts", [Res]),
     #{sum := Sum, gr_sum := GrSum} = read_summary("test"),
+    %% total_ok and total_failed is a group count
     [{total_ok, 2},
      {total_eventually_ok_tests, 4},
      {total_failed, 1}] = Sum,
@@ -45,6 +48,8 @@ run_test(_Config) ->
     ok.
 
 run_test2_repeat3(_Config) ->
+    %% Just 3 tests, each failing when its name matches
+    %% how many times we execute (repeat) the group.
     Res = os:cmd(repo_dir("ct_app/run_test.sh test2")),
     ct:pal("Res ~ts", [Res]),
     #{sum := Sum, gr_sum := GrSum} = read_summary("test2"),
@@ -56,9 +61,22 @@ run_test2_repeat3(_Config) ->
     ok.
 
 run_test2_repeat4(_Config) ->
+    %% 3 times we fail, the last time we are ok.
     Res = os:cmd("REPEAT=4 " ++ repo_dir("ct_app/run_test.sh test2")),
     ct:pal("Res ~ts", [Res]),
     #{sum := Sum, gr_sum := GrSum} = read_summary("test2"),
+    [{total_ok, 1},
+     {total_eventually_ok_tests, 3},
+     {total_failed, 0}] = Sum,
+    [{groups_summary, {1, 0}},
+     {eventually_ok_tests, 3}] = GrSum,
+    ok.
+
+run_test3_repeat4(_Config) ->
+    %% We do not count always passing tests at all.
+    Res = os:cmd("REPEAT=4 " ++ repo_dir("ct_app/run_test.sh test3")),
+    ct:pal("Res ~ts", [Res]),
+    #{sum := Sum, gr_sum := GrSum} = read_summary("test3"),
     [{total_ok, 1},
      {total_eventually_ok_tests, 3},
      {total_failed, 0}] = Sum,
