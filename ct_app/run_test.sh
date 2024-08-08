@@ -14,8 +14,9 @@ SPEC=$1
 # So we copy the spec manually :(
 mkdir -p _build/test/extras/
 cp $SPEC.spec _build/test/extras/$SPEC.spec
+cp hook.spec _build/test/extras/hook.spec
 
 # Copy hook, so rebar could compile and load it.
 cp ../src/ct_groups_summary_hook.erl tests/ct_groups_summary_hook.erl
 
-rebar3 ct --spec="$SPEC.spec"
+rebar3 ct --spec="hook.spec,$SPEC.spec"
