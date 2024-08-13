@@ -3,3 +3,4 @@ ct_app/_build/
 .*.sw*
 ct_app/tests/ct_groups_summary_hook.erl
 ct_app/spec.spec
+rebar3.crashdump
