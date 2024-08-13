@@ -48,7 +48,8 @@ run_test(_Config) ->
      {total_end_per_testcase_failures, 1},
      {end_per_testcase_failures, Failed}] = Sum,
     [{groups_summary, {2, 1}},
-     {eventually_ok_tests, 4}] = GrSum,
+     {eventually_ok_tests, 4},
+     {end_per_testcase_failures, 1}] = GrSum,
     ok.
 
 run_test2_repeat3(_Config) ->
@@ -63,7 +64,8 @@ run_test2_repeat3(_Config) ->
      {total_end_per_testcase_failures, 0},
      {end_per_testcase_failures, []}] = Sum,
     [{groups_summary, {0, 1}},
-     {eventually_ok_tests, 0}] = GrSum,
+     {eventually_ok_tests, 0},
+     {end_per_testcase_failures, 0}] = GrSum,
     ok.
 
 run_test2_repeat4(_Config) ->
@@ -77,7 +79,8 @@ run_test2_repeat4(_Config) ->
      {total_end_per_testcase_failures, 0},
      {end_per_testcase_failures, []}] = Sum,
     [{groups_summary, {1, 0}},
-     {eventually_ok_tests, 3}] = GrSum,
+     {eventually_ok_tests, 3},
+     {end_per_testcase_failures, 0}] = GrSum,
     ok.
 
 run_test3_repeat4(_Config) ->
@@ -91,7 +94,8 @@ run_test3_repeat4(_Config) ->
      {total_end_per_testcase_failures, 0},
      {end_per_testcase_failures, []}] = Sum,
     [{groups_summary, {1, 0}},
-     {eventually_ok_tests, 3}] = GrSum,
+     {eventually_ok_tests, 3},
+     {end_per_testcase_failures, 0}] = GrSum,
     ok.
 
 run_test_end_per_testcase_fails(_Config) ->
@@ -104,7 +108,8 @@ run_test_end_per_testcase_fails(_Config) ->
      {total_end_per_testcase_failures, 1},
      {end_per_testcase_failures, [{test_end_per_testcase_SUITE, test1}]}] = Sum,
     [{groups_summary, {1, 0}},
-     {eventually_ok_tests, 0}] = GrSum,
+     {eventually_ok_tests, 0},
+     {end_per_testcase_failures, 1}] = GrSum,
     ok.
 
 read_summary(Spec) ->
