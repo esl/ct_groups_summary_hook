@@ -10,6 +10,7 @@
          pre_init_per_suite/3,
          post_end_per_suite/4,
          post_end_per_group/4,
+         post_end_per_testcase/5,
          on_tc_skip/3,
          terminate/1]).
 
@@ -30,7 +31,9 @@ init(_Id, Opts) ->
     {ok, #{logs => proplists:get_value(logs, Opts, false),
            total_ok => 0,
            total_failed => 0,
-           total_eventually_ok_tests => 0}}.
+           total_eventually_ok_tests => 0,
+           %% end_per_testcase_failures contains failed end_per_testcase for all suites
+           end_per_testcase_failures => []}}.
 
 pre_init_per_suite(Suite, Config, State) ->
     log(State, "pre_init_per_suite config: ~p", [Config]),
@@ -53,6 +56,20 @@ post_end_per_group(GroupName, Config, Return, State) ->
     log(State, "NewState: ~p", [State1]),
     {Return, State1}.
 
+post_end_per_testcase(SuiteName, TestcaseName, Config, Return, State) ->
+    log(State, "post_end_per_testcase testcase: ~p ~p", [SuiteName, TestcaseName]),
+    log(State, "post_end_per_testcase config: ~p", [Config]),
+    log(State, "post_end_per_testcase state: ~p", [State]),
+    log(State, "post_end_per_testcase return: ~p", [Return]),
+    case Return of
+        {failed, _} ->
+            #{end_per_testcase_failures := EPT} = State,
+            %% There is no way to fail the testcase from end_per_testcase.
+            {Return, State#{end_per_testcase_failures => [{SuiteName, TestcaseName} | EPT]}};
+        _ ->
+            {Return, State}
+    end.
+
 %% @doc Called when a test case is skipped by either user action
 %% or due to an init function failing.
 on_tc_skip(_TC, Reason, State) ->
@@ -63,11 +80,13 @@ on_tc_skip(_TC, Reason, State) ->
     end.
 
 terminate(#{total_ok := OK, total_eventually_ok_tests := TotalEventuallyOK,
-            total_failed := TotalFailed} = State) ->
-    Content = io_lib:format("~p.~n~p.~n~p~n.",
+            total_failed := TotalFailed, end_per_testcase_failures := EPT} = State) ->
+    Content = io_lib:format("~p.~n~p.~n~p.~n~p.~n~p.~n",
                             [{total_ok, OK},
                              {total_eventually_ok_tests, TotalEventuallyOK},
-                             {total_failed, TotalFailed}]),
+                             {total_failed, TotalFailed},
+                             {total_end_per_testcase_failures, length(lists:usort(EPT))},
+                             {end_per_testcase_failures, EPT}]),
     ok = file:write_file("all_groups.summary", Content),
     State.
 
