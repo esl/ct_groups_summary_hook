@@ -164,10 +164,12 @@ group_name_with_path(GroupName, Config) ->
 %% @doc Write down the number successful and failing groups in a per-suite groups.summary file.
 write_groups_summary(Config, #{total_ok := TOK, total_failed := TFailed,
                                total_eventually_ok_tests := TEvOK,
-                               current_suite := CurrentSuite} = State) ->
+                               current_suite := CurrentSuite,
+                               end_per_testcase_failures := EPT} = State) ->
     GroupState = maps:get(CurrentSuite, State),
     {Ok, Failed, FailedTests} = maps:fold(fun acc_groups_summary/3, {0, 0, 0}, GroupState),
     PrivDir = ?config(priv_dir, Config),
+    SuiteEPT = [Case || {Suite, Case} <- EPT, Suite =:= CurrentSuite],
     case PrivDir of
         undefined ->
             error(priv_dir_undefined);
@@ -175,9 +177,11 @@ write_groups_summary(Config, #{total_ok := TOK, total_failed := TFailed,
             SuiteDir = filename:dirname(string:strip(PrivDir, right, $/)),
             ok = file:write_file(filename:join([SuiteDir, "groups.summary"]),
                                  io_lib:format("~p.\n"
+                                               "~p.\n"
                                                "~p.\n",
                                                [{groups_summary, {Ok, Failed}},
-                                                {eventually_ok_tests, FailedTests}]))
+                                                {eventually_ok_tests, FailedTests},
+                                                {end_per_testcase_failures, length(lists:usort(SuiteEPT))}]))
     end,
     State#{total_ok := TOK + Ok,
            total_failed := TFailed + Failed,
