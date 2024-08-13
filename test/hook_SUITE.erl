@@ -15,7 +15,8 @@ test_cases() ->
     [run_test,
      run_test2_repeat3,
      run_test2_repeat4,
-     run_test3_repeat4].
+     run_test3_repeat4,
+     run_test_end_per_testcase_fails].
 
 init_per_suite(Config) ->
     Config.
@@ -39,10 +40,13 @@ run_test(_Config) ->
     Res = os:cmd(repo_dir("ct_app/run_test.sh test")),
     ct:pal("Res ~ts", [Res]),
     #{sum := Sum, gr_sum := GrSum} = read_summary("test"),
+    Failed = lists:duplicate(13, {test_SUITE, failing_tc_3}),
     %% total_ok and total_failed is a group count
     [{total_ok, 2},
      {total_eventually_ok_tests, 4},
-     {total_failed, 1}] = Sum,
+     {total_failed, 1},
+     {total_end_per_testcase_failures, 1},
+     {end_per_testcase_failures, Failed}] = Sum,
     [{groups_summary, {2, 1}},
      {eventually_ok_tests, 4}] = GrSum,
     ok.
@@ -55,7 +59,9 @@ run_test2_repeat3(_Config) ->
     #{sum := Sum, gr_sum := GrSum} = read_summary("test2"),
     [{total_ok, 0},
      {total_eventually_ok_tests, 0},
-     {total_failed, 1}] = Sum,
+     {total_failed, 1},
+     {total_end_per_testcase_failures, 0},
+     {end_per_testcase_failures, []}] = Sum,
     [{groups_summary, {0, 1}},
      {eventually_ok_tests, 0}] = GrSum,
     ok.
@@ -67,7 +73,9 @@ run_test2_repeat4(_Config) ->
     #{sum := Sum, gr_sum := GrSum} = read_summary("test2"),
     [{total_ok, 1},
      {total_eventually_ok_tests, 3},
-     {total_failed, 0}] = Sum,
+     {total_failed, 0},
+     {total_end_per_testcase_failures, 0},
+     {end_per_testcase_failures, []}] = Sum,
     [{groups_summary, {1, 0}},
      {eventually_ok_tests, 3}] = GrSum,
     ok.
@@ -79,11 +87,25 @@ run_test3_repeat4(_Config) ->
     #{sum := Sum, gr_sum := GrSum} = read_summary("test3"),
     [{total_ok, 1},
      {total_eventually_ok_tests, 3},
-     {total_failed, 0}] = Sum,
+     {total_failed, 0},
+     {total_end_per_testcase_failures, 0},
+     {end_per_testcase_failures, []}] = Sum,
     [{groups_summary, {1, 0}},
      {eventually_ok_tests, 3}] = GrSum,
     ok.
 
+run_test_end_per_testcase_fails(_Config) ->
+    Res = os:cmd(repo_dir("ct_app/run_test.sh test_end_per_testcase")),
+    ct:pal("Res ~ts", [Res]),
+    #{sum := Sum, gr_sum := GrSum} = read_summary("test_end_per_testcase"),
+    [{total_ok, 1},
+     {total_eventually_ok_tests, 0},
+     {total_failed, 0},
+     {total_end_per_testcase_failures, 1},
+     {end_per_testcase_failures, [{test_end_per_testcase_SUITE, test1}]}] = Sum,
+    [{groups_summary, {1, 0}},
+     {eventually_ok_tests, 0}] = GrSum,
+    ok.
 
 read_summary(Spec) ->
     {ok, Sum} = file:consult(repo_dir("ct_app/_build/test/logs/last/all_groups.summary")),
