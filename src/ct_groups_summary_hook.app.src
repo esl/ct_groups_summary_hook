@@ -1,0 +1,11 @@
+{application, ct_groups_summary_hook,
+ [
+  {description, "Common Tests Group Summary Hook"},
+  {vsn, git},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {env, []}
+ ]}.
