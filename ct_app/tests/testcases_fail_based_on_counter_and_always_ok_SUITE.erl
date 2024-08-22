@@ -1,4 +1,4 @@
--module(test3_SUITE).
+-module(testcases_fail_based_on_counter_and_always_ok_SUITE).
 
 -compile([export_all, nowarn_export_all]).
 
