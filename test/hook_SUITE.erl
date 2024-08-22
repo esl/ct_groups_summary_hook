@@ -15,7 +15,7 @@ test_cases() ->
     [run_original_test,
      run_testcases_fail_based_on_counter_repeat3,
      run_testcases_fail_based_on_counter_repeat4,
-     run_test3_repeat4,
+     run_testcases_fail_based_on_counter_and_always_ok_repeat4,
      run_test_end_per_testcase_fails].
 
 init_per_suite(Config) ->
@@ -86,11 +86,12 @@ run_testcases_fail_based_on_counter_repeat4(_Config) ->
      {end_per_testcase_failures, 0}] = GrSum,
     ok.
 
-run_test3_repeat4(_Config) ->
+run_testcases_fail_based_on_counter_and_always_ok_repeat4(_Config) ->
     %% We do not count always passing tests at all.
-    Res = os:cmd("REPEAT=4 " ++ repo_dir("ct_app/run_test.sh test3")),
+    Suite = "testcases_fail_based_on_counter_and_always_ok",
+    Res = os:cmd("REPEAT=4 " ++ repo_dir("ct_app/run_test.sh " ++ Suite)),
     ct:pal("Res ~ts", [Res]),
-    #{sum := Sum, gr_sum := GrSum} = read_summary("test3"),
+    #{sum := Sum, gr_sum := GrSum} = read_summary(Suite),
     [{total_ok, 1},
      {total_eventually_ok_tests, 3},
      {total_failed, 0},
