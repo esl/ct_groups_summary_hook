@@ -5,9 +5,7 @@
 
 -compile([export_all, nowarn_export_all]).
 
-% -define(ERROR(E), (throw(E))).
 -define(ERROR(E), (error(E))).
-% -define(ERROR(E), (exit(E))).
 
 all() ->
     [{group, test_group},
@@ -51,13 +49,11 @@ test_cases() ->
      failing_tc_2,
      failing_tc_3].
 
-% init_per_suite(_Config) -> ?ERROR({error, init_per_suite});
 init_per_suite(Config) ->
     %% atomics are automatically garbage collected
     %% when they are no longer referenced
     [ {counter, atomics:new(1, [{signed, false}])} | Config ].
 
-% end_per_suite(_Config) -> ?ERROR({error, end_per_suite});
 end_per_suite(Config) -> Config.
 
 init_per_group(skipped_test_group, _Config) ->
