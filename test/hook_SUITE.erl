@@ -12,7 +12,7 @@ groups() ->
     [{test_group, [], test_cases()}].
 
 test_cases() ->
-    [run_test,
+    [run_original_test,
      run_testcases_fail_based_on_counter_repeat3,
      run_testcases_fail_based_on_counter_repeat4,
      run_test3_repeat4,
@@ -35,12 +35,13 @@ init_per_testcase(_CaseName, Config) ->
 end_per_testcase(_CaseName, Config) ->
     Config.
 
-run_test(_Config) ->
-    %% Original tests, tests everything.
-    Res = os:cmd(repo_dir("ct_app/run_test.sh test")),
+run_original_test(_Config) ->
+    %% Original tests from big_suite, tests everything.
+    Suite = "original_test",
+    Res = os:cmd(repo_dir("ct_app/run_test.sh " ++ Suite)),
     ct:pal("Res ~ts", [Res]),
-    #{sum := Sum, gr_sum := GrSum} = read_summary("test"),
-    Failed = lists:duplicate(13, {test_SUITE, failing_tc_3}),
+    #{sum := Sum, gr_sum := GrSum} = read_summary(Suite),
+    Failed = lists:duplicate(13, {original_test_SUITE, failing_tc_3}),
     %% total_ok and total_failed is a group count
     [{total_ok, 2},
      {total_eventually_ok_tests, 4},

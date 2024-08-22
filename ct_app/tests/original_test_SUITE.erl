@@ -1,4 +1,7 @@
--module(test_SUITE).
+%% Original suite from the big_tests, which covers all cases.
+%% So, it is a bit complicated.
+%% Other suites test specific features and much simpler.
+-module(original_test_SUITE).
 
 -compile([export_all, nowarn_export_all]).
 
