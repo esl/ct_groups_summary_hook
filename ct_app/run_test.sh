@@ -2,7 +2,7 @@
 set -e
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-SPEC=$1
+SUITE=$1
 
 # Rebar3 is broken, so it fails with:
 # {function_clause,
@@ -13,7 +13,8 @@ SPEC=$1
 
 # So we copy the spec manually :(
 mkdir -p _build/test/extras/
-cat $SPEC.spec hook.spec > spec.spec
+echo "{suites, \"tests\", ${SUITE}_SUITE}." > spec.spec
+cat hook.spec >> spec.spec
 cp spec.spec _build/test/extras/spec.spec
 
 # Copy hook, so rebar could compile and load it.

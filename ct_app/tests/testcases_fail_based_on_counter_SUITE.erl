@@ -1,4 +1,9 @@
--module(test2_SUITE).
+%% Each testcase would fail based on counter.
+%% test1 would fail on the first run.
+%% test2 would fail on the second run.
+%% test3 would fail on the third run.
+%% Define REPEAT environment variable to set repeat_until_all_ok value.
+-module(testcases_fail_based_on_counter_SUITE).
 
 -compile([export_all, nowarn_export_all]).
 
