@@ -7,5 +7,6 @@
                   kernel,
                   stdlib
                  ]},
+  {licenses, ["Apache-2.0"]},
   {env, []}
  ]}.
