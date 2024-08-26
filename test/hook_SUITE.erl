@@ -51,6 +51,17 @@ run_original_test(_Config) ->
     [{groups_summary, {2, 1}},
      {eventually_ok_tests, 4},
      {end_per_testcase_failures, 1}] = GrSum,
+    ["CT results:",
+     "    2 groups passed",
+     "    1 groups failed",
+     "    4 tests eventually passed",
+     "    1 tests with end_per_testcase failed",
+     "    32 tests passed",
+     "    17 tests failed",
+     "    33 tests skipped by user",
+     "    40 tests skipped automatically",
+     "Failing the test due to auto skipped cases",
+     "CODE=55"] = summarise_results(),
     ok.
 
 run_testcases_fail_based_on_counter_repeat3(_Config) ->
@@ -68,6 +79,16 @@ run_testcases_fail_based_on_counter_repeat3(_Config) ->
     [{groups_summary, {0, 1}},
      {eventually_ok_tests, 0},
      {end_per_testcase_failures, 0}] = GrSum,
+    ["CT results:",
+     "    0 groups passed",
+     "    1 groups failed",
+     "    0 tests eventually passed",
+     "    0 tests with end_per_testcase failed",
+     "    6 tests passed",
+     "    3 tests failed","    0 tests skipped by user",
+     "    0 tests skipped automatically",
+     "No test groups were executed",
+     "CODE=53"] = summarise_results(),
     ok.
 
 run_testcases_fail_based_on_counter_repeat4(_Config) ->
@@ -84,6 +105,15 @@ run_testcases_fail_based_on_counter_repeat4(_Config) ->
     [{groups_summary, {1, 0}},
      {eventually_ok_tests, 3},
      {end_per_testcase_failures, 0}] = GrSum,
+    ["CT results:",
+     "    1 groups passed",
+     "    0 groups failed",
+     "    3 tests eventually passed",
+     "    0 tests with end_per_testcase failed",
+     "    9 tests passed",
+     "    3 tests failed","    0 tests skipped by user",
+     "    0 tests skipped automatically"]
+     = summarise_results(),
     ok.
 
 run_testcases_fail_based_on_counter_and_always_ok_repeat4(_Config) ->
@@ -100,6 +130,15 @@ run_testcases_fail_based_on_counter_and_always_ok_repeat4(_Config) ->
     [{groups_summary, {1, 0}},
      {eventually_ok_tests, 3},
      {end_per_testcase_failures, 0}] = GrSum,
+    ["CT results:",
+     "    1 groups passed",
+     "    0 groups failed",
+     "    3 tests eventually passed",
+     "    0 tests with end_per_testcase failed",
+     "    13 tests passed",
+     "    3 tests failed",
+     "    0 tests skipped by user",
+     "    0 tests skipped automatically"] = summarise_results(),
     ok.
 
 run_test_end_per_testcase_fails(_Config) ->
@@ -114,6 +153,17 @@ run_test_end_per_testcase_fails(_Config) ->
     [{groups_summary, {1, 0}},
      {eventually_ok_tests, 0},
      {end_per_testcase_failures, 1}] = GrSum,
+    ["CT results:",
+     "    1 groups passed",
+     "    0 groups failed",
+     "    0 tests eventually passed",
+     "    1 tests with end_per_testcase failed",
+     "    1 tests passed",
+     "    0 tests failed",
+     "    0 tests skipped by user",
+     "    0 tests skipped automatically",
+     "Failing the test due to failed end_per_testcase",
+     "CODE=1"] = summarise_results(),
     ok.
 
 read_summary(Spec) ->
@@ -124,3 +174,10 @@ read_summary(Spec) ->
 
 repo_dir(Dir) ->
     "../../../../" ++ Dir.
+
+summarise_results() ->
+    Res = os:cmd(summarise_results_cmd()),
+    string:tokens(Res, "\n").
+
+summarise_results_cmd() ->
+    "cd " ++ repo_dir("") ++ " && tools/summarise-ct-results ct_app/_build/test/logs/last/ || echo CODE=$?".
