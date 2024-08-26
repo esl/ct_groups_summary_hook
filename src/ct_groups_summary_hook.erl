@@ -1,7 +1,10 @@
 %% @doc Count successful and failed groups in the test suite.
 %%
-%% Use by adding the following line to `test.spec`:
-%% {ct_hooks, [ct_results_summary_hook]}.
+%% Use by adding the following line to `test.spec':
+%% `{ct_hooks, [ct_results_summary_hook]}.'
+%%
+%% @author Radek Szymczyszyn <radoslaw.szymczyszyn@erlang-solutions.com>
+%% Created: Fri Jun 1 12:59:12 2018 +0200
 -module(ct_groups_summary_hook).
 
 %% Callbacks
@@ -192,7 +195,7 @@ acc_groups_summary(_GroupName, #group_status{status = ok, n_failed = NFailedTest
     %% Either the group has passed succesfully on the first run,
     %% or it was repeated, and eventually passed, so the tests must finally be ok.
     {OkGroupsAcc + 1, FailedGroupsAcc, EventuallyOkAcc + NFailedTests};
-acc_groups_summary(_GroupName, #group_status{status = failed, n_failed = NFailedTests},
+acc_groups_summary(_GroupName, #group_status{status = failed, n_failed = _NFailedTests},
                    {OkGroupsAcc, FailedGroupsAcc, EventuallyOkAcc}) ->
     %% The group never succeeded, the failed tests are NOT eventually ok.
     {OkGroupsAcc, FailedGroupsAcc + 1, EventuallyOkAcc}.

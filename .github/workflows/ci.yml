@@ -23,3 +23,5 @@ jobs:
       run: rebar3 as test compile
     - name: Run tests
       run: rebar3 ct
+    - name: Check docs
+      run: rebar3 ex_doc

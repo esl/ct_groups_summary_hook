@@ -1,6 +1,9 @@
 %% Original suite from the big_tests, which covers all cases.
 %% So, it is a bit complicated.
 %% Other suites test specific features and much simpler.
+%%
+%% @author Denys Gonchar <denys.gonchar@erlang-solutions.com>
+%% Created: Wed Jun 14 10:48:04 2023 +0200
 -module(original_test_SUITE).
 
 -compile([export_all, nowarn_export_all]).
