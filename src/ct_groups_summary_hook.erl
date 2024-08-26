@@ -2,6 +2,9 @@
 %%
 %% Use by adding the following line to `test.spec':
 %% `{ct_hooks, [ct_results_summary_hook]}.'
+%%
+%% @author Radek Szymczyszyn <radoslaw.szymczyszyn@erlang-solutions.com>
+%% Created: Fri Jun 1 12:59:12 2018 +0200
 -module(ct_groups_summary_hook).
 
 %% Callbacks

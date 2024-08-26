@@ -11,3 +11,5 @@ reads the `groups.summary` file.
 This repo contains the hook and tests for it.
 
 [Hex package](https://hex.pm/packages/ct_groups_summary_hook)
+
+Original development was done in MongooseIM repository.
