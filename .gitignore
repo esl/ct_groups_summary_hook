@@ -4,3 +4,4 @@ ct_app/_build/
 ct_app/tests/ct_groups_summary_hook.erl
 ct_app/spec.spec
 rebar3.crashdump
+doc/
