@@ -61,6 +61,9 @@ run_original_test(_Config) ->
      "    33 tests skipped by user",
      "    40 tests skipped automatically",
      "Failing the test due to auto skipped cases",
+     "Failing the test due to failed rerun groups",
+     "Failing the test due to failed test cases",
+     "Failing the test due to failed end_per_testcase",
      "CODE=55"] = summarise_results(),
     ok.
 
@@ -87,7 +90,9 @@ run_testcases_fail_based_on_counter_repeat3(_Config) ->
      "    6 tests passed",
      "    3 tests failed","    0 tests skipped by user",
      "    0 tests skipped automatically",
-     "No test groups were executed",
+     "No test groups were executed successfully",
+     "Failing the test due to failed rerun groups",
+     "Failing the test due to failed test cases",
      "CODE=53"] = summarise_results(),
     ok.
 

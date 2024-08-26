@@ -46,25 +46,15 @@ verify_results_with_groups(OkGroups, FailedGroups, EventuallyOkTests, EndPerTest
               [OkGroups, FailedGroups, EventuallyOkTests, EndPerTestcaseFailed,
                OkTests, FailedTests, UserSkipped, AutoSkipped]),
     Code = FailedGroups + FailedTests - EventuallyOkTests + EndPerTestcaseFailed + AutoSkipped,
-    if
-        OkTests =:= 0 ->
-            io:format("No tests were executed~n");
-        OkGroups =:= 0 ->
-            io:format("No test groups were executed~n");
-        AutoSkipped > 0 ->
-            %% this can give false negative result for eventually passing
-            %% groups with 'sequence' and 'repeat_until_all_ok' flags, but
-            %% at least it's not false positive result.
-            io:format("Failing the test due to auto skipped cases~n");
-        FailedGroups > 0 ->
-            io:format("Failing the test due to failed rerun groups~n");
-        FailedTests > EventuallyOkTests ->
-            io:format("Failing the test due to failed test cases~n");
-        EndPerTestcaseFailed > 0 ->
-            io:format("Failing the test due to failed end_per_testcase~n");
-        true ->
-            ok
-    end,
+    print_if(OkTests =:= 0, "No tests were executed successfully~n"),
+    print_if(OkGroups =:= 0, "No test groups were executed successfully~n"),
+    %% this can give false negative result for eventually passing
+    %% groups with 'sequence' and 'repeat_until_all_ok' flags, but
+    %% at least it's not false positive result.
+    print_if(AutoSkipped > 0, "Failing the test due to auto skipped cases~n"),
+    print_if(FailedGroups > 0, "Failing the test due to failed rerun groups~n"),
+    print_if(FailedTests > EventuallyOkTests, "Failing the test due to failed test cases~n"),
+    print_if(EndPerTestcaseFailed > 0, "Failing the test due to failed end_per_testcase~n"),
     if
         OkTests =:= 0 ->
             erlang:halt(100404);
@@ -73,6 +63,11 @@ verify_results_with_groups(OkGroups, FailedGroups, EventuallyOkTests, EndPerTest
         true ->
             erlang:halt(Code)
     end.
+
+print_if(true, Str) ->
+    io:format(Str);
+print_if(false, _Str) ->
+    ok.
 
 suite_summaries(Directories) ->
     summaries(Directories, "suite.summary").
