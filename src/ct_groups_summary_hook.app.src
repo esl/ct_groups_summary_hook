@@ -7,6 +7,8 @@
                   kernel,
                   stdlib
                  ]},
+  {maintainers, ["Erlang Solutions"]},
   {licenses, ["Apache-2.0"]},
+  {links, [{"GitHub", "https://github.com/esl/ct_groups_summary_hook/"}]},
   {env, []}
  ]}.
