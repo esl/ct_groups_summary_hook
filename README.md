@@ -12,4 +12,6 @@ This repo contains the hook and tests for it.
 
 [Hex package](https://hex.pm/packages/ct_groups_summary_hook)
 
-Original development was done in MongooseIM repository.
+## Credits
+
+`ct_groups_summary_hook` was originally created within [the MongooseIM repository as part of its test framework](https://github.com/esl/MongooseIM).
