@@ -88,12 +88,13 @@ run_testcases_fail_based_on_counter_repeat3(_Config) ->
      "    0 tests eventually passed",
      "    0 tests with end_per_testcase failed",
      "    6 tests passed",
-     "    3 tests failed","    0 tests skipped by user",
+     "    3 tests failed",
+     "    0 tests skipped by user",
      "    0 tests skipped automatically",
      "No test groups were executed successfully",
      "Failing the test due to failed rerun groups",
      "Failing the test due to failed test cases",
-     "CODE=53"] = summarise_results(),
+     "CODE=4"] = summarise_results(),
     ok.
 
 run_testcases_fail_based_on_counter_repeat4(_Config) ->
@@ -116,7 +117,8 @@ run_testcases_fail_based_on_counter_repeat4(_Config) ->
      "    3 tests eventually passed",
      "    0 tests with end_per_testcase failed",
      "    9 tests passed",
-     "    3 tests failed","    0 tests skipped by user",
+     "    3 tests failed",
+     "    0 tests skipped by user",
      "    0 tests skipped automatically"]
      = summarise_results(),
     ok.
