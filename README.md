@@ -15,13 +15,13 @@ This repo contains the hook and tests for it.
 
 # Test Execution Summary
 
-See [summarise-ct-results script](tools/summarise-ct-results), which
+See [summarise-ct-results script](priv/summarise-ct-results), which
 reads the `groups.summary` file.
 
 Usage example (takes a list of directories as arguments):
 
 ```
-tools/summarise-ct-results _build/test/logs/last/
+priv/summarise-ct-results _build/test/logs/last/
 CT results:
     1 groups passed
     0 groups failed

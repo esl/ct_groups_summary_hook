@@ -187,4 +187,4 @@ summarise_results() ->
     string:tokens(Res, "\n").
 
 summarise_results_cmd() ->
-    "cd " ++ repo_dir("") ++ " && tools/summarise-ct-results ct_app/_build/test/logs/last/ || echo CODE=$?".
+    "cd " ++ repo_dir("") ++ " && priv/summarise-ct-results ct_app/_build/test/logs/last/ || echo CODE=$?".
