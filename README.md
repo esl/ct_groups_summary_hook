@@ -34,3 +34,9 @@ CT results:
 ```
 
 Returns with the exit code 0 on the test execution success.
+
+# Apply code formatter before commit
+
+```
+rebar3 fmt -w
+```
