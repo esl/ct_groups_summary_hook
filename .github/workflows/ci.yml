@@ -25,3 +25,5 @@ jobs:
       run: rebar3 ct
     - name: Check docs
       run: rebar3 ex_doc
+    - name: Check format
+      run: rebar3 fmt -c
